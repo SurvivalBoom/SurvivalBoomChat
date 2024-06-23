@@ -1,4 +1,4 @@
-package net.survivalboom.survivalboombedwars.actions;
+package net.survivalboom.survivalboomchat.actions;
 
 public class ActionPerformFailed extends RuntimeException {
 

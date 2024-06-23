@@ -1,7 +1,7 @@
 package net.survivalboom.survivalboomchat.actions.types;
 
-import net.survivalboom.survivalboombedwars.actions.ActionPerformFailed;
 import net.survivalboom.survivalboomchat.actions.Action;
+import net.survivalboom.survivalboomchat.actions.ActionPerformFailed;
 import net.survivalboom.survivalboomchat.actions.ActionType;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
 import org.bukkit.entity.Player;

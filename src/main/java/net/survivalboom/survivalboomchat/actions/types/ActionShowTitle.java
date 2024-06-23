@@ -2,8 +2,8 @@ package net.survivalboom.survivalboomchat.actions.types;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
-import net.survivalboom.survivalboombedwars.actions.ActionPerformFailed;
 import net.survivalboom.survivalboomchat.actions.Action;
+import net.survivalboom.survivalboomchat.actions.ActionPerformFailed;
 import net.survivalboom.survivalboomchat.actions.ActionType;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
 import org.bukkit.entity.Player;
