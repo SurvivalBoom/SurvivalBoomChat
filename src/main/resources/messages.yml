@@ -1,0 +1,20 @@
+#
+# SurvivalBoom Network 2024 | SurvivalBoomChat
+#              MessagesFile | By TIMURishche
+#
+
+command-error: "&c&l! &fСталася помилка при спробі виконати команду! Кодер - динозавр! &4ЫыЫыЫыЫыЫ"
+no-permission: "&c| &fУ вас немає доступу до цього! (&c{PERMISSION}&f)"
+
+reload-success: "&a| &fПлагін &aSurvivalBoomChat &fуспішно перезавантажено!"
+reload-error: "&c| &fЯкийсь чат або перевірка модерації не була завантажена. Перевірте консоль на деталі."
+
+chat-not-found: "&c&! &fДоступний чат не знайдено! Зверніться до адміністрації."
+
+nobody-hear-you: "&c&l! &fВас ніхто не почув."
+nobody-hear-you-online: "&c&l! &fВас ніхто не почув. Схоже ще ви самі на сервері &c:("
+nobody-hear-you-range: "&c&l! &fВас ніхто не почув. Наразі ви пишете у &eлокальний &fчат. Щоб писати у &aглобальний &fчат, ставте &c&l! &fперед повідомленням."
+
+help: |
+  &8| &c/sbchat reload &7- Перезавантажити плагін.
+  &8| &c/sbchat help &7- Виводить ось цей дуже цікавий текст.

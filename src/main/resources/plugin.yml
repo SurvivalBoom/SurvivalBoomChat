@@ -1,0 +1,14 @@
+name: SurvivalBoomChat
+version: '${version}'
+main: net.survivalboom.survivalboomchat.SurvivalBoomChat
+api-version: '1.20'
+
+website: "https://survivalboom.net"
+authors: [TIMURishche, SurvivalBoom Network 2024]
+
+commands:
+  survivalboomchat:
+    description: "Головна команда SurvivalBoomChat"
+    aliases:
+      - sbchat
+

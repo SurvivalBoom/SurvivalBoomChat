@@ -1,0 +1,130 @@
+#
+# SurvivalBoom Network 2024 | SurvivalBoom Chat
+#         Configuration File | By TIMURishche
+#
+
+moderation:
+
+  # Реклама (шкідливі посилання, реклама свого недо-майнкрафт сервера, тощо)
+  advertisement:
+
+    type: LINKS
+
+    enabled: true # Увімкнути?
+
+    # Список regex виразів які будуть перевіряти повідомлення.
+    regex:
+      - '\b((\d{1,2}|2(5[0-5]|[0-4]\d))[._,)(-]+){3}(\d{1,2}|2(5[0-5]|[0-4]\d))(:\d{2,7})?'
+      - '(?i)\b(https?:\/\/)?[\w\.а-яА-Я-]+\.([a-z]{2,4}|[рР][фФ]|[уУ][кК][рР])\b(:\d{2,7})?(\/\S+)?'
+
+    # Білий список посилань які можна відправляти.
+    whitelist:
+      - "google.com"
+      - "googel.com"
+      - "pizdec.net"
+      - "ukraine.ua"
+      - "pido-russia.фу"
+      - "mc.survivalboom.net"
+      - "survivalboom.net"
+      - "pe.survivalboom.net"
+
+    block: false # Заблокувати повністю? Якщо false, повідомлення буде відправлене, але усі рекламні посилання будуть замінені на щось що ви вкажете нижче.
+
+    replacement: "Я тупий дегенерат." # Текст який буде вставлено замість посилання.
+
+    # Події які буде виконувати плагін при спрацюванні цього правила.
+    event:
+      enabled: true
+      actions:
+        - "[give-effect] BLINDNESS 30 1 false"
+        - "[give-effect] CONFUSION 30 5 false"
+        - "[play-sound] ENTITY_VILLAGER_DEATH 10 0"
+        - "[show-title] 1 6 1 &c&lМОСКАЛЬ! ВИЙШОВ НАХУЙ!{NL}&fПіарщикам місце у пащі динозаврика!"
+
+  # Захист від капсу. НЕ КРИЧИ НА МЕНЕ, ЗРОЗУМІВ?!?!??!?!
+  caps:
+
+    type: CAPS
+
+    enabled: true # Увімкнено?
+
+    length: 6 # Мінімальна довжина повідомлення після якої плагін буде перевіряти повідомлення.
+
+    percent: 80 # Скільки відсотків повідомлення повинно бути капсом, щоб правило спрацювало.
+
+    block: false # Заблокувати повністю? Якщо false, повідомлення буде відправлено, але капс буде замінений на літери нижнього регістру.
+
+    # Події які буде виконувати плагін при спрацюванні цього правила.
+    event:
+      enabled: true
+      actions:
+        - "[give-effect] BLINDNESS 10 1 false"
+        - "[give-effect] CONFUSION 10 5 false"
+        - "[play-sound] ENTITY_ENDER_DRAGON_GROWL 10 0"
+        - "[show-title] 1 6 1 &c&lГР-Р-Р!{NL}&fКРИЧАТИ ТУТ МОЖЕ ТІЛЬКИ ДИНОЗАВРИК!"
+
+  # Захист від матюків. Я ТВОЮ МАМАШКУ #@#@#@# ЕБ@#@ ХОХ@#
+  swear:
+
+    type: SWEARS
+
+    enabled: true # Увімкнено?
+
+    block: false # Заблокувати повністю? Якщо false, повідомлення буде очищено від "рускаґа міра".
+
+    replacement: "Слава Україні!" # "Мило" яким буде відчищатись повідомлення.
+
+    file: "swears.txt" # Файл у якому будуть лежати усі заборонені слова.
+
+    event:
+      enabled: true
+      actions:
+        - "[give-effect] BLINDNESS 10 1 false"
+        - "[give-effect] CONFUSION 30 5 false"
+        - "[play-sound] ENTITY_ENDER_DRAGON_GROWL 10 1"
+        - "[show-title] 1 6 1 &c&lЇБАЛО НА НУЛЬ!{NL}&fВбийся головою об стіну!"
+
+chats:
+
+  global:
+    name: "Глобальний"
+    moderation: true
+    prefix: "!"
+    format: "&6ɢ &#00d5fc| &r{PREFIX}{PLAYER}&#00d5fc: &f{MESSAGE}"
+
+  local:
+    name: "Локальний"
+    moderation: true
+    range: 100
+    format: "&#00d5fcʟ &#00d5fc| &r{prefix}{player}&#00d5fc: &7{message}"
+    event:
+      enabled: true
+      others-actions:
+        - "[play-sound] ENTITY_CHICKEN_EGG 10 2"
+
+  notify:
+    name: "Оголошення"
+    moderation: true
+    prefix: "#notify"
+    write-permission: "survivalboomchat.chat.notify"
+    format: |
+
+      &4&l
+      &4&l
+      &4&l
+      &4&l
+      &4&l
+      &4&l
+      &4&l
+      &4&l
+      &4&l
+      &4&l
+      &7&l[&c&l!&7&l] &r{PREFIX}{PLAYER}&f: {MESSAGE}
+      &4&l
+      &4&l
+    event:
+      enabled: true
+      actions:
+        - "[play-sound] UI_BUTTON_CLICK 10 1"
+      others-actions:
+        - "[play-sound] UI_BUTTON_CLICK 10 1"
