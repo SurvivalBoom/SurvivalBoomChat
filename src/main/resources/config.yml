@@ -8,7 +8,7 @@ moderation:
   # Реклама (шкідливі посилання, реклама свого недо-майнкрафт сервера, тощо)
   advertisement:
 
-    type: LINKS
+    type: LINK
 
     enabled: true # Увімкнути?
 
@@ -29,6 +29,15 @@ moderation:
       - "pe.survivalboom.net"
 
     block: false # Заблокувати повністю? Якщо false, повідомлення буде відправлене, але усі рекламні посилання будуть замінені на щось що ви вкажете нижче.
+
+    admin-message: |
+      &8&l[&c&l!&8&l] &fГравець &e{PLAYER} &fрекламує щось у чаті.
+      &e{MESSAGE}
+
+    notify-permission: "sbchat.advertisement.notify"
+    bypass-permission: "sbchat.advertisement.bypass"
+
+    block-message: "&c&l! &fВаше повідомлення містить рекламу! Йдіть нахуй!"
 
     replacement: "Я тупий дегенерат." # Текст який буде вставлено замість посилання.
 
@@ -54,6 +63,15 @@ moderation:
 
     block: false # Заблокувати повністю? Якщо false, повідомлення буде відправлено, але капс буде замінений на літери нижнього регістру.
 
+    admin-message: |
+      &8&l[&c&l!&8&l] &fГравець &e{PLAYER} &fзловживає капсом.
+      &e{MESSAGE}
+
+    notify-permission: "sbchat.caps.notify"
+    bypass-permission: "sbchat.caps.bypass"
+
+    block-message: "&c&l! &fВаше повідомлення містить зловживання капсом! Заспокойтесь будь ласка!"
+
     # Події які буде виконувати плагін при спрацюванні цього правила.
     event:
       enabled: true
@@ -66,7 +84,7 @@ moderation:
   # Захист від матюків. Я ТВОЮ МАМАШКУ #@#@#@# ЕБ@#@ ХОХ@#
   swear:
 
-    type: SWEARS
+    type: SWEAR
 
     enabled: true # Увімкнено?
 
@@ -75,6 +93,15 @@ moderation:
     replacement: "Слава Україні!" # "Мило" яким буде відчищатись повідомлення.
 
     file: "swears.txt" # Файл у якому будуть лежати усі заборонені слова.
+
+    admin-message: |
+      &8&l[&c&l!&8&l] &fГравець &e{PLAYER} &fвикористовує російську лайку у чаті.
+      &e{MESSAGE}
+
+    notify-permission: "sbchat.swear.notify"
+    bypass-permission: "sbchat.swear.bypass"
+
+    block-message: "&c&l! &fВаше повідомлення містить російську лайку! Заспокойтесь будь ласка!"
 
     event:
       enabled: true
@@ -87,28 +114,30 @@ moderation:
 chats:
 
   global:
+    enabled: true
     name: "Глобальний"
     moderation: true
     prefix: "!"
-    format: "&6ɢ &#00d5fc| &r{PREFIX}{PLAYER}&#00d5fc: &f{MESSAGE}"
+    format: "&6ɢ &#00d5fc| &r{PREFIX}{PLAYER}{SUFFIX}&#00d5fc: &f{MESSAGE}"
 
   local:
+    enabled: true
     name: "Локальний"
     moderation: true
     range: 100
-    format: "&#00d5fcʟ &#00d5fc| &r{prefix}{player}&#00d5fc: &7{message}"
+    format: "&#00d5fcʟ &#00d5fc| &r{PREFIX}{PLAYER}{SUFFIX}&#00d5fc: &7{MESSAGE}"
     event:
       enabled: true
       others-actions:
         - "[play-sound] ENTITY_CHICKEN_EGG 10 2"
 
   notify:
+    enabled: true
     name: "Оголошення"
     moderation: true
     prefix: "#notify"
     write-permission: "survivalboomchat.chat.notify"
     format: |
-
       &4&l
       &4&l
       &4&l
@@ -119,8 +148,7 @@ chats:
       &4&l
       &4&l
       &4&l
-      &7&l[&c&l!&7&l] &r{PREFIX}{PLAYER}&f: {MESSAGE}
-      &4&l
+      &7&l[&c&l!&7&l] &r{PREFIX}{PLAYER}{SUFFIX}&f: {MESSAGE}
       &4&l
     event:
       enabled: true
@@ -128,3 +156,19 @@ chats:
         - "[play-sound] UI_BUTTON_CLICK 10 1"
       others-actions:
         - "[play-sound] UI_BUTTON_CLICK 10 1"
+
+mentions:
+
+  enabled: true
+
+  format: "&r&#FF008C@{MENTION}&7"
+
+  limit: 1
+
+  ping-event:
+    enabled: true
+    actions:
+      - '[play-sound] ENTITY_ZOMBIE_BREAK_WOODEN_DOOR 10 1'
+      - '[show-action-title] &#a8ff78Гравець &#FF008C{MENTIONER} &#a8ff78згадав вас у чаті.'
+    others-actions:
+      - '[play-sound] ENTITY_EXPERIENCE_ORB_PICKUP 10 1'

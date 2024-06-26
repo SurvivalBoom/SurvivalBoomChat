@@ -15,8 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class PluginMessages {
 
@@ -48,12 +47,19 @@ public class PluginMessages {
         Bukkit.getConsoleSender().sendMessage(parse(message));
     }
 
-    public static void sendMessage(@NotNull Audience target, @NotNull String message) {
+    public static void sendMessage(@NotNull Audience target, @Nullable String message) {
+        if (message == null) return;
         if (message.equals("")) return;
         if (target instanceof Player player) target.sendMessage(parse(message, player));
         else target.sendMessage(parse(message));
     }
 
+    public static void sendAdmins(@Nullable String permission, @Nullable String message) {
+        if (message == null || permission == null) return;
+        List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+        players.removeIf(p -> !p.hasPermission(permission));
+        players.forEach(p -> PluginMessages.sendMessage(p, message));
+    }
 
     @NotNull
     public static Component parse(@NotNull String text, @Nullable Player target) {

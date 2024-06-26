@@ -12,16 +12,13 @@ import net.survivalboom.survivalboomchat.moderation.ModerationManager;
 import net.survivalboom.survivalboomchat.placeholders.Placeholders;
 import net.survivalboom.survivalboomchat.utils.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 public class Chat {
 
@@ -71,7 +68,9 @@ public class Chat {
         String message = ((TextComponent) event.message()).content();
 
         if (write_permission != null && !player.hasPermission(write_permission)) return false;
-        return prefix == null || message.startsWith(prefix);
+        if (prefix != null && (!message.startsWith(prefix) || message.equals(prefix))) return false;
+
+        return true;
 
     }
 
@@ -80,9 +79,19 @@ public class Chat {
         if (moderation) ModerationManager.moderate(event);
         if (event.isCancelled()) return;
 
-        render(event);
         viewers(event);
+
+        int count = Mentions.mentionsCount(event);
+        SurvivalBoomChat.getPlugin().getLogger().warning(String.valueOf(count));
+        if (count > Mentions.getLimit()) {
+            PluginMessages.sendMessage(event.getPlayer(), PluginMessages.getMessage("mention-limit-reached").replace("{LIMIT}", String.valueOf(Mentions.getLimit())));
+            event.setCancelled(true);
+            return;
+        }
+
+        render(event);
         performEvents(event);
+
 
     }
 
@@ -106,7 +115,7 @@ public class Chat {
     public void render(@NotNull AsyncChatEvent event) {
 
         Player player = event.getPlayer();
-        String message = ((TextComponent) event.message()).content();
+        String message = Utils.componentDeserialize(event.message());
 
         if (prefix != null) message = message.replaceFirst(prefix, "");
         if (message.startsWith(" ")) message = message.replaceFirst(" ", "");
@@ -114,7 +123,6 @@ public class Chat {
         // Якщо гравець не має прав на відправку кольорових повідомлень, пропустити повідомлення через костиль і очистити його від кольорових кодів.
         if (!player.hasPermission("sbchat.chat.colors")) message = ((TextComponent) PluginMessages.parseOnlyColors(message)).content();
 
-        String finalMessage = message;
         ChatRenderer renderer = ((source, sourceDisplayName, message1, viewer) -> {
 
             Placeholders placeholders = new Placeholders();
@@ -122,9 +130,9 @@ public class Chat {
             placeholders.add("{PLAYER}", player.getName());
             placeholders.add("{SUFFIX}", Utils.getSuffix(player));
 
-            Component base = PluginMessages.parse(format, player, placeholders);
-            //noinspection UnstableApiUsage
-            return base.replaceText("{MESSAGE}", PluginMessages.parseOnlyColors(finalMessage));
+            Component out = Mentions.processRender(source, viewer, message1);
+
+            return PluginMessages.parse(format.replace("{MESSAGE}", Utils.componentDeserialize(Objects.requireNonNullElse(out, message1))), player, placeholders);
 
         });
 
@@ -143,7 +151,12 @@ public class Chat {
         viewers.add(player);
         viewers.add(Bukkit.getConsoleSender());
 
-        Collection<Player> playersNearby = player.getLocation().getNearbyPlayers(range);
+        Collection<Player> playersNearby;
+        try {
+            playersNearby = Bukkit.getScheduler().callSyncMethod(SurvivalBoomChat.getPlugin(), () -> player.getLocation().getNearbyPlayers(range)).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (range > 0 && !playersNearby.contains(p)) continue;
@@ -153,18 +166,16 @@ public class Chat {
 
         if (viewers.size() == 2) {
 
-            if (Bukkit.getOnlinePlayers().size() == 1) {
-                Bukkit.getScheduler().runTaskLater(SurvivalBoomChat.getPlugin(), () -> PluginMessages.sendMessage(player, PluginMessages.getMessage("nobody-hear-you-online")), 20L);
-                return;
-            }
+            Runnable runnable;
 
-            if (range > 0 && playersNearby.size() == 0) {
-                Bukkit.getScheduler().runTaskLater(SurvivalBoomChat.getPlugin(), () -> PluginMessages.sendMessage(player, PluginMessages.getMessage("nobody-hear-you-range")), 20L);
-                return;
-            }
+            if (Bukkit.getOnlinePlayers().size() == 1) runnable = () -> PluginMessages.sendMessage(player, PluginMessages.getMessage("nobody-hear-you-online"));
+            else if (range > 0 && playersNearby.size() == 0) runnable = () -> PluginMessages.sendMessage(player, PluginMessages.getMessage("nobody-hear-you-range"));
+            else runnable = () -> PluginMessages.sendMessage(player, PluginMessages.getMessage("nobody-hear-you"));
 
-            Bukkit.getScheduler().runTaskLater(SurvivalBoomChat.getPlugin(), () -> PluginMessages.sendMessage(player, PluginMessages.getMessage("nobody-hear-you")), 20L);
-
+            Bukkit.getScheduler().runTaskLater(SurvivalBoomChat.getPlugin(), () -> {
+                if (event.isCancelled()) return;
+                runnable.run();
+            }, 20L);
         }
 
     }
@@ -180,6 +191,21 @@ public class Chat {
 
         return placeholders;
 
+    }
+
+    @NotNull
+    public String getName() {
+        return name;
+    }
+
+    @Nullable
+    public String getPrefix() {
+        return prefix;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
 }

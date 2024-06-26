@@ -1,8 +1,9 @@
 package net.survivalboom.survivalboomchat.moderation.types;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
-import me.clip.placeholderapi.libs.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.TextComponent;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
+import net.survivalboom.survivalboomchat.moderation.CheckType;
 import net.survivalboom.survivalboomchat.moderation.Moderation;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,7 @@ public class Links extends Moderation {
 
     @Override
     public boolean check(@NotNull AsyncChatEvent event) {
+        if (checkBypass(event.getPlayer())) return false;
         String message = ((TextComponent) event.message()).content();
         return find(message).size() > 0;
     }

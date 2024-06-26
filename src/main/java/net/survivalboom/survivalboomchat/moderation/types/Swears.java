@@ -1,10 +1,16 @@
 package net.survivalboom.survivalboomchat.moderation.types;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.TextReplacementConfig;
+import net.kyori.adventure.text.serializer.ComponentSerializer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.survivalboom.survivalboomchat.SurvivalBoomChat;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
+import net.survivalboom.survivalboomchat.moderation.CheckType;
 import net.survivalboom.survivalboomchat.moderation.Moderation;
+import net.survivalboom.survivalboomchat.utils.Utils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,14 +37,15 @@ public class Swears extends Moderation {
 
     @Override
     public boolean check(@NotNull AsyncChatEvent event) {
-        String message = ((TextComponent) event.message()).content();
+        if (checkBypass(event.getPlayer())) return false;
+        String message = ((TextComponent) event.message()).content().toLowerCase();
         return find(message).size() > 0;
     }
 
     @Override @SuppressWarnings("UnstableApiUsage")
     public void clean(@NotNull AsyncChatEvent event) {
-        String message = ((me.clip.placeholderapi.libs.kyori.adventure.text.TextComponent) event.message()).content();
-        find(message).forEach(s -> event.message().replaceText(s, PluginMessages.parse(replacement)));
+        String message = ((TextComponent) event.message()).content();
+        find(message).forEach(s -> event.message(Utils.componentReplace(event.message(), s, replacement)));
     }
 
     private List<String> readBadWordsFromFile(File file) {
@@ -49,7 +56,7 @@ public class Swears extends Moderation {
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                 String line;
                 while ((line = br.readLine()) != null) {
-                    badWords.add(line.trim());
+                    badWords.add(line.trim().toLowerCase());
                 }
 
             }

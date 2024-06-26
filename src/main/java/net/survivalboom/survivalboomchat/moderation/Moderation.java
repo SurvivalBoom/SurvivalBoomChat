@@ -1,12 +1,13 @@
 package net.survivalboom.survivalboomchat.moderation;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
+import net.survivalboom.survivalboomchat.configuration.PluginMessages;
 import net.survivalboom.survivalboomchat.events.Event;
-import net.survivalboom.survivalboomchat.moderation.types.CheckType;
-import net.survivalboom.survivalboomchat.utils.Utils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class Moderation {
 
@@ -17,6 +18,10 @@ public abstract class Moderation {
     protected final CheckType type;
     protected final ConfigurationSection section;
     protected final String replacement;
+    protected final String adminMessage;
+    protected final String blockMessage;
+    protected final String notifyPermission;
+    protected final String bypassPermission;
 
 
     public Moderation(@NotNull String name, @NotNull ConfigurationSection section, @NotNull CheckType type) {
@@ -31,29 +36,47 @@ public abstract class Moderation {
 
         block = section.getBoolean("block");
         replacement = section.getString("replacement");
+        adminMessage = section.getString("admin-message");
+        blockMessage = section.getString("block-message");
+
+        notifyPermission = section.getString("notify-permission");
+        bypassPermission = section.getString("bypass-permission");
 
         this.type = type;
     }
 
-    public void moderate(@NotNull AsyncChatEvent event) {
+    public void moderate(@NotNull AsyncChatEvent event, @NotNull AtomicBoolean checked) {
         boolean result = check(event);
         if (!result) return;
-        punishment(event);
+        if (!checked.get()) punishment(event);
+        if (block) event.setCancelled(true);
+        else clean(event);
+        checked.set(true);
     }
 
     public boolean check(@NotNull AsyncChatEvent event) {
-        throw new IllegalArgumentException("Not implemented");
+        return false;
     }
 
     public void punishment(@NotNull AsyncChatEvent event) {
-        if (block) event.setCancelled(true);
-        else clean(event);
         if (triggerEvent == null) return;
         triggerEvent.perform(event.getPlayer(), null);
+        PluginMessages.sendMessage(event.getPlayer(), blockMessage);
+        PluginMessages.sendAdmins(notifyPermission, adminMessage);
     }
 
     public void clean(@NotNull AsyncChatEvent event) {
 
+    }
+
+    @NotNull
+    public String getName() {
+        return name;
+    }
+
+    protected boolean checkBypass(@NotNull Player player) {
+        if (bypassPermission == null) return false;
+        return player.hasPermission(bypassPermission);
     }
 
 }

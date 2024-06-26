@@ -1,10 +1,10 @@
 package net.survivalboom.survivalboomchat.moderation;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.TextComponent;
 import net.survivalboom.survivalboomchat.SurvivalBoomChat;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
 import net.survivalboom.survivalboomchat.moderation.types.Caps;
-import net.survivalboom.survivalboomchat.moderation.types.CheckType;
 import net.survivalboom.survivalboomchat.moderation.types.Links;
 import net.survivalboom.survivalboomchat.moderation.types.Swears;
 import net.survivalboom.survivalboomchat.utils.Utils;
@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ModerationManager {
 
@@ -37,7 +38,7 @@ public class ModerationManager {
             if (ss == null) continue;
             try {
 
-                String typeRaw = section.getString("type", "");
+                String typeRaw = ss.getString("type", "");
                 CheckType type = Utils.getEnumValue(CheckType.class, typeRaw);
                 if (type == null) throw new IllegalArgumentException("Invalid moderation check type. Valid: CAPS, LINKS, SWEARS");
 
@@ -46,9 +47,9 @@ public class ModerationManager {
 
                     case CAPS -> moderation = new Caps(s, ss, type);
 
-                    case LINKS -> moderation = new Links(s, ss, type);
+                    case LINK -> moderation = new Links(s, ss, type);
 
-                    case SWEARS -> moderation = new Swears(s, ss, type);
+                    case SWEAR -> moderation = new Swears(s, ss, type);
 
                     default -> { throw new IllegalArgumentException("HRUK"); }
 
@@ -68,7 +69,10 @@ public class ModerationManager {
     }
 
     public static void moderate(@NotNull AsyncChatEvent event) {
-        checks.forEach(m -> m.moderate(event));
+        AtomicBoolean atomicBoolean = new AtomicBoolean();
+        checks.forEach(m -> {
+            m.moderate(event, atomicBoolean);
+        });
     }
 
 }

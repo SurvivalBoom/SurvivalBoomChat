@@ -1,6 +1,7 @@
 package net.survivalboom.survivalboomchat;
 
 import net.survivalboom.survivalboomchat.chats.ChatManager;
+import net.survivalboom.survivalboomchat.chats.Mentions;
 import net.survivalboom.survivalboomchat.commands.CommandsHandler;
 import net.survivalboom.survivalboomchat.commands.TabCompleteHandler;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
@@ -30,8 +31,13 @@ public final class SurvivalBoomChat extends JavaPlugin {
             PluginMessages.consoleSend("&b>> &fChecking files...");
             checkFiles(false);
 
+            PluginMessages.consoleSend("&b>> &fLoading configuration...");
+            getConfig().load(new File(getDataFolder(), "config.yml"));
+            PluginMessages.reload(new File(getDataFolder(), "messages.yml"));
+
             ModerationManager.init();
             ChatManager.init();
+            Mentions.init();
 
             PluginMessages.consoleSend("&b>> &fRegistering plugin components...");
             PluginCommand command = getCommand("survivalboomchat");

@@ -1,5 +1,7 @@
 package net.survivalboom.survivalboomchat.utils;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.milkbowl.vault.chat.Chat;
 import net.survivalboom.survivalboomchat.SurvivalBoomChat;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
@@ -102,6 +104,25 @@ public class Utils {
     public static <T extends Enum<T>> T getEnumValue(Class<T> enumType, String name) {
         try { return Enum.valueOf(enumType, name);}
         catch (IllegalArgumentException e) { return null; }
+    }
+
+    @NotNull
+    public static Component componentReplace(@NotNull Component in, @NotNull String replacement, @NotNull String value) {
+
+        String serialised = componentDeserialize(in);
+
+        serialised = serialised.replaceAll(String.format("(?i)%s", replacement), value);
+
+        SurvivalBoomChat.getPlugin().getLogger().warning(serialised);
+
+        return PluginMessages.parseOnlyColors(serialised);
+
+    }
+
+    @NotNull
+    public static String componentDeserialize(@NotNull Component in) {
+        LegacyComponentSerializer serializer = LegacyComponentSerializer.legacyAmpersand();
+        return serializer.serialize(in);
     }
 
 }

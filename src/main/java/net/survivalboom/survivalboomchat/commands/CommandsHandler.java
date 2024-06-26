@@ -16,18 +16,27 @@ public class CommandsHandler implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        String argument = Utils.getArrayValue(args, 0);
-        if (argument == null) {
-            sendAbout(sender);
-            return true;
+        try {
+
+            String argument = Utils.getArrayValue(args, 0);
+            if (argument == null) {
+                sendAbout(sender);
+                return true;
+            }
+
+            switch (argument) {
+
+                case "reload" -> ReloadCommands.command(sender);
+
+                default -> PluginMessages.sendMessage(sender, PluginMessages.getMessage("help"));
+
+            }
+
         }
 
-        switch (argument) {
-
-            case "reload" -> ReloadCommands.command(sender);
-
-            default -> PluginMessages.sendMessage(sender, PluginMessages.getMessage("help"));
-
+        catch (Exception e) {
+            Utils.sendPluginError("Command perform failed with error.", e);
+            PluginMessages.sendMessage(sender, PluginMessages.getMessage("command-error"));
         }
 
         return true;

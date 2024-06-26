@@ -2,6 +2,8 @@ package net.survivalboom.survivalboomchat.moderation.types;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.TextComponent;
+import net.survivalboom.survivalboomchat.configuration.PluginMessages;
+import net.survivalboom.survivalboomchat.moderation.CheckType;
 import net.survivalboom.survivalboomchat.moderation.Moderation;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
@@ -20,11 +22,18 @@ public class Caps extends Moderation {
     @Override
     public boolean check(@NotNull AsyncChatEvent event) {
 
+        if (checkBypass(event.getPlayer())) return false;
+
         String message = ((TextComponent) event.message()).content();
         if (message.length() < length) return false;
 
         return percentage > 0 && calculateCapsPercentage(message) > percentage;
 
+    }
+
+    public void clean(@NotNull AsyncChatEvent event) {
+        String message = ((TextComponent)event.message()).content().toLowerCase();
+        event.message(PluginMessages.parseOnlyColors(message));
     }
 
     public double calculateCapsPercentage(String message) {
