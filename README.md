@@ -18,8 +18,8 @@
 - Paper 1.20.4
 
 ### 💥 Збірка 💥
-**1.** Завантажити SurvivalBoomChat `git clone https://github.com/SurvivalBoom/SurvivalBoomChat.git`
-**2.** Перейти у папку із завантаженим проєктом та виконати `gradlew build`.
+**1.** Завантажити SurvivalBoomChat `git clone https://github.com/SurvivalBoom/SurvivalBoomChat.git` \
+**2.** Перейти у папку із завантаженим проєктом та виконати `gradlew build`. \
 **3.** Отримати вихідний jar файл.
 
 ###### SURVIVALBOOOM NETWORK © 2022-2024
