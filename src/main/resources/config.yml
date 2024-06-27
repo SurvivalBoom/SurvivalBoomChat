@@ -3,12 +3,15 @@
 #         Configuration File | By TIMURishche
 #
 
+# Перевірки для автоматичної модерації.
+# Ви можете додавати скільки завгодно перевірок різних типів.
+# (Можливо коли-небуть SurvivalBoomChat зможе використовувати нейромережі для модерації...)
 moderation:
 
   # Реклама (шкідливі посилання, реклама свого недо-майнкрафт сервера, тощо)
   advertisement:
 
-    type: LINK
+    type: LINK # Тип цієї перевірки.
 
     enabled: true # Увімкнути?
 
@@ -30,14 +33,16 @@ moderation:
 
     block: false # Заблокувати повністю? Якщо false, повідомлення буде відправлене, але усі рекламні посилання будуть замінені на щось що ви вкажете нижче.
 
+    # Повідомлення яке отримає адміністрація при спрацюванні цієї перевірки.
     admin-message: |
       &8&l[&c&l!&8&l] &fГравець &e{PLAYER} &fрекламує щось у чаті.
       &e{MESSAGE}
 
-    notify-permission: "sbchat.advertisement.notify"
-    bypass-permission: "sbchat.advertisement.bypass"
+    notify-permission: "sbchat.advertisement.notify" # Довзвіл необхідний для отримання сповіщення.
 
-    block-message: "&c&l! &fВаше повідомлення містить рекламу! Йдіть нахуй!"
+    bypass-permission: "sbchat.advertisement.bypass" # Дозвіл необхідний для отримання імунітету від цієї перевірки.
+
+    block-message: "&c&l! &fВаше повідомлення містить рекламу! Йдіть нахуй!" # Повідомлення яке буде надсилатись порушнику якщо block == true.
 
     replacement: "Я тупий дегенерат." # Текст який буде вставлено замість посилання.
 
@@ -54,8 +59,7 @@ moderation:
   caps:
 
     type: CAPS
-
-    enabled: true # Увімкнено?
+    enabled: true
 
     length: 6 # Мінімальна довжина повідомлення після якої плагін буде перевіряти повідомлення.
 
@@ -68,11 +72,11 @@ moderation:
       &e{MESSAGE}
 
     notify-permission: "sbchat.caps.notify"
+
     bypass-permission: "sbchat.caps.bypass"
 
     block-message: "&c&l! &fВаше повідомлення містить зловживання капсом! Заспокойтесь будь ласка!"
 
-    # Події які буде виконувати плагін при спрацюванні цього правила.
     event:
       enabled: true
       actions:
@@ -85,12 +89,10 @@ moderation:
   swear:
 
     type: SWEAR
+    enabled: true
+    block: false
 
-    enabled: true # Увімкнено?
-
-    block: false # Заблокувати повністю? Якщо false, повідомлення буде очищено від "рускаґа міра".
-
-    replacement: "Слава Україні!" # "Мило" яким буде відчищатись повідомлення.
+    replacement: "Слава Україні!" # "Мило" яким буде відчищатись повідомлення від російських матів.
 
     file: "swears.txt" # Файл у якому будуть лежати усі заборонені слова.
 
@@ -99,6 +101,7 @@ moderation:
       &e{MESSAGE}
 
     notify-permission: "sbchat.swear.notify"
+
     bypass-permission: "sbchat.swear.bypass"
 
     block-message: "&c&l! &fВаше повідомлення містить російську лайку! Заспокойтесь будь ласка!"
@@ -111,20 +114,23 @@ moderation:
         - "[play-sound] ENTITY_ENDER_DRAGON_GROWL 10 1"
         - "[show-title] 1 6 1 &c&lЇБАЛО НА НУЛЬ!{NL}&fВбийся головою об стіну!"
 
+# Налаштування чатів.
+# Ви можете додавати скільки завгодно різних чатів.
 chats:
 
+  # Глобальний чат.
   global:
-    enabled: true
-    name: "Глобальний"
-    moderation: true
-    prefix: "!"
-    format: "&6ɢ &#00d5fc| &r{PREFIX}{PLAYER}{SUFFIX}&#00d5fc: &f{MESSAGE}"
+    enabled: true # Увімкнено?
+    name: "Глобальний" # Красива назва.
+    moderation: true # Увімкнути модерацію?
+    prefix: "!" # Префікс необхідний для написання у цей чат.
+    format: "&6ɢ &#00d5fc| &r{PREFIX}{PLAYER}{SUFFIX}&#00d5fc: &f{MESSAGE}" # Вигляд цього чату.
 
   local:
     enabled: true
     name: "Локальний"
     moderation: true
-    range: 100
+    range: 100 # Відстань на якій гравці почують повідомлення у цьому чаті.
     format: "&#00d5fcʟ &#00d5fc| &r{PREFIX}{PLAYER}{SUFFIX}&#00d5fc: &7{MESSAGE}"
     event:
       enabled: true
@@ -136,7 +142,7 @@ chats:
     name: "Оголошення"
     moderation: true
     prefix: "#notify"
-    write-permission: "survivalboomchat.chat.notify"
+    write-permission: "survivalboomchat.chat.notify" # Дозвіл необхідний для написання у цей чат.
     format: |
       &4&l
       &4&l
@@ -157,14 +163,17 @@ chats:
       others-actions:
         - "[play-sound] UI_BUTTON_CLICK 10 1"
 
+# Система згадувань інших гравців у чаті.
+# Повідомлення "Гей, ти, TIMURishche!" перетвориться у "Гей, ти, @TIMURishche!". Той кого згадали отримає звуковий сигнал.
 mentions:
 
-  enabled: true
+  enabled: true # Увімкнено?
 
-  format: "&r&#FF008C@{MENTION}&7"
+  format: "&r&#FF008C@{MENTION}&7" # Те на що буде замінятись нік гравця якого згадали.
 
-  limit: 1
+  limit: 1 # Ліміт згадувань які можуть бути в одному повідомленні.
 
+  # Подія яка буде спрацьовувати при згадуванні гравця. У цьому випадку actions діють над тип кого згадали, а others-actions діють над тим хто згадав.
   ping-event:
     enabled: true
     actions:
@@ -172,3 +181,25 @@ mentions:
       - '[show-action-title] &#a8ff78Гравець &#FF008C{MENTIONER} &#a8ff78згадав вас у чаті.'
     others-actions:
       - '[play-sound] ENTITY_EXPERIENCE_ORB_PICKUP 10 1'
+
+# Система приватних повідомлень. Гравці зможуть надсилати повідомлення так щоб ці повідомлення бачили тільки вони.
+private-messaging:
+
+  enabled: true # Увімкнено?
+
+  sender-format: "&#00d5fc➫ &fВи прошепотіли &6{PLAYER}&f: &e{MESSAGE}" # Формат повідомлення яке буде надіслано відправнику.
+  receiver-format: "&#00d5fc➫ &6{PLAYER} &fшепоче вам: &e{MESSAGE}" # Формат повідомолення яке буде надіслано отримувачу.
+
+  # Команди які зареєструє плагін для використання у якості особистих повідомлень.
+  commands:
+    - pm
+    - m
+    - tell
+    - whisper
+    - msg
+
+  # Подія яка буде спрацьовувати при отриманні отримувачем повідомлення. У цьому випадку actions діють на отримувача, а others-actions на відправника.
+  event:
+    enabled: true
+    actions:
+      - "[play-sound] UI_BUTTON_CLICK 10 1"

@@ -82,9 +82,14 @@ public class Chat {
         viewers(event);
 
         int count = Mentions.mentionsCount(event);
-        SurvivalBoomChat.getPlugin().getLogger().warning(String.valueOf(count));
         if (count > Mentions.getLimit()) {
             PluginMessages.sendMessage(event.getPlayer(), PluginMessages.getMessage("mention-limit-reached").replace("{LIMIT}", String.valueOf(Mentions.getLimit())));
+            event.setCancelled(true);
+            return;
+        }
+
+        if (count != 0 && !event.getPlayer().hasPermission("sbchat.mention")) {
+            PluginMessages.sendMessage(event.getPlayer(), PluginMessages.getMessage("mention-no-permission").replace("{PERMISSION}", "sbchat.mention"));
             event.setCancelled(true);
             return;
         }

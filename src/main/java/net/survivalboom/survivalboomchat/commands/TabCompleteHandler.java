@@ -1,9 +1,11 @@
 package net.survivalboom.survivalboomchat.commands;
 
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,7 +21,7 @@ public class TabCompleteHandler implements TabCompleter {
         return out;
     }
 
-    private boolean addPossibleCompletions(@Nullable List<String> hints, @Nullable List<String> arguments, @NotNull String[] tabcompleteArgs, @NotNull List<String> list, int index, boolean onlySuggest) {
+    public static boolean addPossibleCompletions(@Nullable List<String> hints, @Nullable List<String> arguments, @NotNull String[] tabcompleteArgs, @NotNull List<String> list, int index, boolean onlySuggest) {
 
         if (tabcompleteArgs.length > index + 1) return false;
         if (tabcompleteArgs.length - 1 < index) return true;
@@ -59,8 +61,18 @@ public class TabCompleteHandler implements TabCompleter {
 
     }
 
-    private String replaceColorCodes(@NotNull String in) {
+    private static String replaceColorCodes(@NotNull String in) {
         return in.replace("&", "§");
+    }
+
+    public static List<String> getPlayerNames() {
+
+        List<String> out = new ArrayList<>();
+
+        for (Player player : Bukkit.getOnlinePlayers()) out.add(player.getName());
+
+        return out;
+
     }
 
 }

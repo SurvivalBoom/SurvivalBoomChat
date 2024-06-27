@@ -94,6 +94,8 @@ public class Mentions {
 
     public static int mentionsCount(@NotNull AsyncChatEvent event) {
 
+        if (!enabled || format == null) return 0;
+
         int count = 0;
         for (Audience audience : event.viewers()) {
 
@@ -118,6 +120,8 @@ public class Mentions {
 
     @Nullable
     public static Component processRender(@NotNull Audience source, @NotNull Audience viewer, @NotNull Component message) {
+
+        if (!enabled || format == null) return message;
 
         if (!(viewer instanceof Player player) || !(source instanceof Player sender)) return null;
 

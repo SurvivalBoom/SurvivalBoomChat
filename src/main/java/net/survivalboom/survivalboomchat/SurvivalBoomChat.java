@@ -6,6 +6,7 @@ import net.survivalboom.survivalboomchat.commands.CommandsHandler;
 import net.survivalboom.survivalboomchat.commands.TabCompleteHandler;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
 import net.survivalboom.survivalboomchat.moderation.ModerationManager;
+import net.survivalboom.survivalboomchat.pm.PMCommand;
 import net.survivalboom.survivalboomchat.utils.Utils;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,6 +39,7 @@ public final class SurvivalBoomChat extends JavaPlugin {
             ModerationManager.init();
             ChatManager.init();
             Mentions.init();
+            PMCommand.init();
 
             PluginMessages.consoleSend("&b>> &fRegistering plugin components...");
             PluginCommand command = getCommand("survivalboomchat");
@@ -90,7 +92,7 @@ public final class SurvivalBoomChat extends JavaPlugin {
         File dataFolder = plugin.getDataFolder();
         if (!dataFolder.exists()) dataFolder.mkdir();
 
-        String[] files = {"config.yml", "messages.yml", "swears.txt"};
+        String[] files = {"config.yml", "messages.yml", "swears.txt", "documentation.txt"};
         for (String file : files) if (Utils.copyPluginFile(file) && !silent) PluginMessages.consoleSend(String.format("&3>> &fCreated &3%s", file));
 
     }

@@ -32,7 +32,11 @@ public class Event {
 
 
     public void perform(@NotNull Player player, @Nullable Placeholders placeholders) {
-        for (EventAction action : eventActionList) action.perform(player, placeholders);
+        for (EventAction action : eventActionList) action.perform(player, true, placeholders);
+    }
+
+    public void perform(@NotNull Player player, boolean performOthers, @Nullable Placeholders placeholders) {
+        for (EventAction action : eventActionList) action.perform(player, performOthers, placeholders);
     }
 
     public void perform(@NotNull Player player, @NotNull List<Player> otherPlayers, @Nullable Placeholders placeholders) {

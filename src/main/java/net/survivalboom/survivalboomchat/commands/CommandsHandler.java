@@ -1,7 +1,7 @@
 package net.survivalboom.survivalboomchat.commands;
 
 import net.survivalboom.survivalboomchat.SurvivalBoomChat;
-import net.survivalboom.survivalboomchat.commands.cmds.ReloadCommands;
+import net.survivalboom.survivalboomchat.commands.cmds.ReloadCommand;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
 import net.survivalboom.survivalboomchat.utils.Utils;
 import org.bukkit.Sound;
@@ -26,7 +26,7 @@ public class CommandsHandler implements CommandExecutor {
 
             switch (argument) {
 
-                case "reload" -> ReloadCommands.command(sender);
+                case "reload" -> ReloadCommand.command(sender);
 
                 default -> PluginMessages.sendMessage(sender, PluginMessages.getMessage("help"));
 

@@ -29,12 +29,14 @@ public class EventAction {
 
     }
 
-    public void perform(@NotNull Player player, @Nullable Placeholders placeholders) {
+    public void perform(@NotNull Player player, boolean performOthers, @Nullable Placeholders placeholders) {
 
         if (!isEnabled) return;
         if (permisssion != null && !player.hasPermission(permisssion)) return;
 
         actions.perform(player, player, placeholders);
+
+        if (!performOthers) return;
 
         for (Player otherPlayer : Bukkit.getOnlinePlayers()) if (otherPlayer.getName().equals(player.getName())) othersActions.perform(otherPlayer, player, placeholders);
     }
