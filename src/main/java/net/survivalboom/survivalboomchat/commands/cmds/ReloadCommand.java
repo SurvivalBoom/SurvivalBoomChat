@@ -1,9 +1,11 @@
 package net.survivalboom.survivalboomchat.commands.cmds;
 
 import net.survivalboom.survivalboomchat.SurvivalBoomChat;
+import net.survivalboom.survivalboomchat.chatheads.ChatHeads;
 import net.survivalboom.survivalboomchat.chats.ChatManager;
 import net.survivalboom.survivalboomchat.chats.Mentions;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
+import net.survivalboom.survivalboomchat.eventmessages.EventMessagesManager;
 import net.survivalboom.survivalboomchat.moderation.ModerationManager;
 import net.survivalboom.survivalboomchat.pm.PMCommand;
 import org.bukkit.command.CommandSender;
@@ -28,6 +30,9 @@ public class ReloadCommand {
 
         Mentions.reload();
         PMCommand.reload();
+
+        ChatHeads.reload();
+        EventMessagesManager.reload();
 
         if (ChatManager.reload() || ModerationManager.reload()) {
             PluginMessages.sendMessage(sender, PluginMessages.getMessage("reload-error"));

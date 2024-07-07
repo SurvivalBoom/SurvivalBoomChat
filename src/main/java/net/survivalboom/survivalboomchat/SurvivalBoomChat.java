@@ -1,10 +1,13 @@
 package net.survivalboom.survivalboomchat;
 
+import net.survivalboom.survivalboomchat.chatheads.ChatHeads;
 import net.survivalboom.survivalboomchat.chats.ChatManager;
 import net.survivalboom.survivalboomchat.chats.Mentions;
 import net.survivalboom.survivalboomchat.commands.CommandsHandler;
 import net.survivalboom.survivalboomchat.commands.TabCompleteHandler;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
+import net.survivalboom.survivalboomchat.eventmessages.EventMessage;
+import net.survivalboom.survivalboomchat.eventmessages.EventMessagesManager;
 import net.survivalboom.survivalboomchat.moderation.ModerationManager;
 import net.survivalboom.survivalboomchat.pm.PMCommand;
 import net.survivalboom.survivalboomchat.utils.Utils;
@@ -40,6 +43,8 @@ public final class SurvivalBoomChat extends JavaPlugin {
             ChatManager.init();
             Mentions.init();
             PMCommand.init();
+            ChatHeads.reload();
+            EventMessagesManager.init();
 
             PluginMessages.consoleSend("&b>> &fRegistering plugin components...");
             PluginCommand command = getCommand("survivalboomchat");

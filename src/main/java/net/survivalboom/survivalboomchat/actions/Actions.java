@@ -1,5 +1,6 @@
 package net.survivalboom.survivalboomchat.actions;
 
+import net.survivalboom.survivalboomchat.SurvivalBoomChat;
 import net.survivalboom.survivalboomchat.actions.types.*;
 import net.survivalboom.survivalboomchat.placeholders.Placeholders;
 import org.bukkit.entity.Player;
@@ -41,12 +42,17 @@ public class Actions {
         try { action_text = text.substring(type_setter.length() + 1); }
         catch (StringIndexOutOfBoundsException e) { action_text = text.substring(type_setter.length()); }
 
+        if (action_text.startsWith(" ")) action_text = action_text.replaceFirst(" ", "");
+
+
         int delay = 1;
         Matcher matcher = Pattern.compile("<delay=(\\d+)>").matcher(action_text);
         if (matcher.find()) {
             delay = Integer.parseInt(matcher.group(1));
             action_text = matcher.replaceAll("");
         }
+
+        if (action_text.endsWith(" ")) action_text = action_text.substring(0, action_text.length() - 1);
 
         Action action = null;
         switch (actionType) {
@@ -82,6 +88,8 @@ public class Actions {
             case TELEPORT_TO_PLAYER -> action = new ActionTeleport(text, action_text, delay);
 
             case SHOW_ACTION_TITLE -> action = new ActionShowActionTitle(text, action_text, delay);
+
+            case SEND_HEAD_MESSAGE -> action = new ActionSendHeadMessage(text, action_text, delay);
 
         }
 

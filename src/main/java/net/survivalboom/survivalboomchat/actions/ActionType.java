@@ -18,5 +18,5 @@ public enum ActionType {
     CLOSE_MENU,
     TELEPORT_TO_PLAYER,
     TAKE_ITEM,
-    OPEN_MENU
+    SEND_HEAD_MESSAGE,
 }

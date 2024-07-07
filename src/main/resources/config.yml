@@ -203,3 +203,62 @@ private-messaging:
     enabled: true
     actions:
       - "[play-sound] UI_BUTTON_CLICK 10 1"
+
+# Події плагіну.
+events:
+
+  join:
+    enabled: true
+    message: "&2&l! &r{PREFIX}{PLAYER}{SUFFIX} &fзайшов."
+    online-limit: 15
+    event:
+      enabled: true
+      actions:
+        - '[clear-chat] 40 <delay=20>'
+        - '[send-head-message] join-message <delay=20>'
+        - '[play-sound] MUSIC_DISC_WARD 10 1 <delay=20>'
+        - '[stop-sound] MUSIC_DISC_WARD <delay=190>'
+
+  first-join:
+    enabled: true
+    message: "&d&l! &r{PREFIX}{PLAYER}{SUFFIX} &fзайшов."
+    online-limit: 15
+    event:
+      enabled: true
+      actions:
+        - '[clear-chat] 40 <delay=20>'
+        - '[send-head-message] join-message <delay=20>'
+        - '[play-sound] MUSIC_DISC_WARD 10 1 <delay=20>'
+        - '[stop-sound] MUSIC_DISC_WARD <delay=190>'
+
+  advancement:
+    enabled: true
+    message: "&6🏹 &r{PREFIX}{PLAYER}{SUFFIX} &fотримав досягнення &r{ADVANCEMENT}&f."
+    online-limit: 15
+
+  death:
+    enabled: true
+    message: "&c☠ &r{PREFIX}{PLAYER}{SUFFIX} &fпомер..."
+    online-limit: 15
+
+  leave:
+    enabled: true
+    message: "&c&l! &r{PREFIX}{PLAYER}{SUFFIX} &fвийшов."
+    online-limit: 15
+
+
+# Система малювання лиця гравця у чаті.
+chat-heads:
+
+  pixel-symbol: "█"
+
+  messages:
+    join-message:
+      - '      &x&0&0&d&5&f&c&kkkk&x&f&c&c&0&0&0&lS&x&f&c&b&9&0&0&lu&x&f&c&b&3&0&0&lr&x&f&c&a&c&0&0&lv&x&f&c&a&5&0&0&li&x&f&c&9&e&0&0&lv&x&f&c&9&8&0&0&la&x&f&c&9&1&0&0&ll&x&f&c&8&a&0&0&lB&x&f&c&8&3&0&0&lo&x&f&c&7&d&0&0&lo&x&f&c&7&6&0&0&lm&x&0&0&d&5&f&c&kkkk'
+      - ''
+      - ' &x&0&0&d&5&f&c🔥 &fВітаємо &6%player_name%'
+      - ' &x&0&0&d&5&f&c⚡ &f[&e{ONLINE}&f/&e{MAX-ONLINE}&f] гравців онлайн.'
+      - ''
+      - ' &x&0&0&d&5&f&c⚓ &7Меню серверу &x&0&0&d&5&f&c/menu'
+      - ' &x&0&0&d&5&f&c⭐ &7Підтримати сервер &x&0&0&d&5&f&c/donate'
+      - ''

@@ -3,6 +3,7 @@ package net.survivalboom.survivalboomchat.actions;
 import net.survivalboom.survivalboomchat.SurvivalBoomChat;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
 import net.survivalboom.survivalboomchat.placeholders.Placeholders;
+import net.survivalboom.survivalboomchat.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -38,6 +39,10 @@ public abstract class Action {
                 PluginMessages.consoleSend(String.format("&c>> &6%s", e));
 
                 PluginMessages.sendMessage(player, String.format("&bSurvivalBoomChat &8&l► &fAn error occurred while performing action: &e%s", ORIGINAL_ACTION_TEXT));
+
+                if (e instanceof ActionPerformFailed) return;
+
+                Utils.sendStackTrace(e);
 
             }
 
