@@ -21,5 +21,6 @@
 **1.** Завантажити SurvivalBoomChat `git clone https://github.com/SurvivalBoom/SurvivalBoomChat.git` \
 **2.** Перейти у папку із завантаженим проєктом та виконати `gradlew build`. \
 **3.** Отримати вихідний jar файл.
-
-###### SURVIVALBOOOM NETWORK © 2022-2024
+<a href="https://survivalboom.net" target="_blank">
+  ###### SURVIVALBOOOM NETWORK © 2022-2024
+</a>
