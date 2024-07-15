@@ -42,7 +42,7 @@ public class ChatHeads {
         if (skinsRestorer != null) {
             SkinProperty skin = getSkin(player);
             if (skin == null) image = getCrafatarAvatar(player.getUniqueId().toString());
-            else image = getSkinsRestorerSkin(skin);
+            else image = getSkinHead(getSkinsRestorerSkin(skin));
         }
 
         else image = getCrafatarAvatar(player.getUniqueId().toString());

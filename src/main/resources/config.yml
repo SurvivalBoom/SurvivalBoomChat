@@ -247,7 +247,6 @@ events:
     message: "&c&l! &r{PREFIX}{PLAYER}{SUFFIX} &fвийшов."
     online-limit: 15
 
-
 # Система малювання лиця гравця у чаті.
 chat-heads:
 
