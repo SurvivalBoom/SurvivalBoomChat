@@ -53,6 +53,10 @@ public final class SurvivalBoomChat extends JavaPlugin {
             command.setTabCompleter(new TabCompleteHandler());
             command.setExecutor(new CommandsHandler());
 
+            PluginCommand ignorecommand = getCommand("ignore");
+            command.setTabCompleter(new TabCompleteHandler());
+            command.setExecutor(new CommandsHandler());
+
             PluginMessages.consoleSend("&a>> &fPlugin &aSurvivalBoomChat &fsuccessfully enabled!");
 
         }

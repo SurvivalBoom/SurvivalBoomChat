@@ -18,6 +18,10 @@ public class CommandsHandler implements CommandExecutor {
 
         try {
 
+            if (label.equalsIgnoreCase("ignore")) {
+
+            }
+
             String argument = Utils.getArrayValue(args, 0);
             if (argument == null) {
                 sendAbout(sender);

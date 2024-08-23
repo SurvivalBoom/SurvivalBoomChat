@@ -12,4 +12,5 @@ commands:
     description: "Головна команда SurvivalBoomChat"
     aliases:
       - sbchat
-
+  ignore:
+    description: "Ігнорувати гравця"
