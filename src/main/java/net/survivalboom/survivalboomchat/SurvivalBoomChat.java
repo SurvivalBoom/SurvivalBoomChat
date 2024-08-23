@@ -6,6 +6,7 @@ import net.survivalboom.survivalboomchat.chats.Mentions;
 import net.survivalboom.survivalboomchat.commands.CommandsHandler;
 import net.survivalboom.survivalboomchat.commands.TabCompleteHandler;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
+import net.survivalboom.survivalboomchat.database.Database;
 import net.survivalboom.survivalboomchat.eventmessages.EventMessage;
 import net.survivalboom.survivalboomchat.eventmessages.EventMessagesManager;
 import net.survivalboom.survivalboomchat.moderation.ModerationManager;
@@ -45,9 +46,14 @@ public final class SurvivalBoomChat extends JavaPlugin {
             PMCommand.init();
             ChatHeads.reload();
             EventMessagesManager.init();
+            Database.init();
 
             PluginMessages.consoleSend("&b>> &fRegistering plugin components...");
             PluginCommand command = getCommand("survivalboomchat");
+            command.setTabCompleter(new TabCompleteHandler());
+            command.setExecutor(new CommandsHandler());
+
+            PluginCommand ignorecommand = getCommand("ignore");
             command.setTabCompleter(new TabCompleteHandler());
             command.setExecutor(new CommandsHandler());
 
@@ -64,6 +70,7 @@ public final class SurvivalBoomChat extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (Database.isEnabled()) Database.shutdown();
         // Plugin shutdown logic
         PluginMessages.consoleSend("&a>> &fPlugin &aSurvivalBoomChat &fsuccessfully disabled!");
     }

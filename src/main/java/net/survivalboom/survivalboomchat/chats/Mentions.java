@@ -6,9 +6,11 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.survivalboom.survivalboomchat.SurvivalBoomChat;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
+import net.survivalboom.survivalboomchat.database.Database;
 import net.survivalboom.survivalboomchat.events.Event;
 import net.survivalboom.survivalboomchat.placeholders.Placeholders;
 import net.survivalboom.survivalboomchat.utils.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
@@ -18,12 +20,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Mentions {
 
     private static String format = null;
     private static boolean enabled = false;
     private static Event pingEvent = null;
+    private static Event pingMutedEvent = null;
     private static int limit = 0;
 
     public static void init() {
@@ -48,6 +52,7 @@ public class Mentions {
         if (eventSection == null) return;
 
         pingEvent = new Event("ping-event", eventSection);
+        pingMutedEvent = new Event("ping-muted-event", eventSection);
 
     }
 
@@ -79,14 +84,17 @@ public class Mentions {
             count++;
 
             String replacement = placeholders.parse(format);
-            Component component = event.message().replaceText(playerName, PluginMessages.parse(replacement));
+            //noinspection UnstableApiUsage
+            @SuppressWarnings("deprecation") Component component = event.message().replaceText(playerName, PluginMessages.parse(replacement));
 
             SurvivalBoomChat.getPlugin().getLogger().warning(Utils.componentDeserialize(component));
 
             event.message(component);
 
             if (pingEvent == null) continue;
-            pingEvent.perform(player, placeholders);
+
+            if (Database.isPingMuted(p, player)) pingMutedEvent.perform(player, placeholders);
+            else pingEvent.perform(player, placeholders);
 
         }
 
@@ -136,10 +144,11 @@ public class Mentions {
         placeholders.add("{MENTIONER}", player.getName());
 
         String replacement = placeholders.parse(format);
-        Component component = message.replaceText(playerName, PluginMessages.parse(replacement));
+        @SuppressWarnings({"UnstableApiUsage", "deprecation"}) Component component = message.replaceText(playerName, PluginMessages.parse(replacement));
 
         if (pingEvent == null) return component;
-        pingEvent.perform(player, new ArrayList<>(List.of(sender)), placeholders);
+        if (Database.isPingMuted(Objects.requireNonNull(Objects.requireNonNull(Bukkit.getPlayer(playerName))), player)) pingMutedEvent.perform(player, new ArrayList<>(List.of(sender)), placeholders);
+        else pingEvent.perform(player, new ArrayList<>(List.of(sender)), placeholders);
 
         return component;
 

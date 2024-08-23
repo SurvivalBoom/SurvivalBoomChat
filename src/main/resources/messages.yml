@@ -28,6 +28,10 @@ nobody-hear-you-range: "&c&l! &fВас ніхто не почув. Наразі 
 mention-limit-reached: "&c| &fВи можете згадати максимум &c{LIMIT} &fгравців."
 mention-no-permission: "&c| &fВи не можете згадувати гравців. &f(&c{PERMISSION}&f)"
 
+ignore-bypass: "&c| &f Ви не можете ігнорувати цього гравця"
+ignore-success: "&a| &f Ви успішно почали ігнорувати цього гравця"
+unignore-success: "&a| &f Ви успішно закінчили ігнорувати цього гравця"
+
 help: |
   &8| &c/sbchat reload &7- Перезавантажити плагін.
   &8| &c/sbchat help &7- Виводить ось цей дуже цікавий текст.
