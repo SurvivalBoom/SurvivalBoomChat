@@ -1,6 +1,7 @@
 package net.survivalboom.survivalboomchat.commands;
 
 import net.survivalboom.survivalboomchat.SurvivalBoomChat;
+import net.survivalboom.survivalboomchat.commands.cmds.IgnoreCommand;
 import net.survivalboom.survivalboomchat.commands.cmds.ReloadCommand;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
 import net.survivalboom.survivalboomchat.utils.Utils;
@@ -19,7 +20,7 @@ public class CommandsHandler implements CommandExecutor {
         try {
 
             if (label.equalsIgnoreCase("ignore")) {
-
+                IgnoreCommand.command(sender, args);
             }
 
             String argument = Utils.getArrayValue(args, 0);
