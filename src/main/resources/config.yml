@@ -3,6 +3,22 @@
 #         Configuration File | By TIMURishche
 #
 
+
+database-settings:
+  enabled: true
+
+  # Плагін підтримує два способи збереження даних гравців.
+  # MySQL - Віддалений сервер із базами даних.
+  # SQLite - Файл із даними гравців який буде зберігатись у файлах плагіну.
+  type: SQLite
+
+  host: "ultimateposhelnahui.survivalboom.net:3306" # Якщо тип SQLite цей параметр ігнорується.
+  database: "SurvivalBoomChat"
+
+  user: "SurvivalBADABUUUUMMM!!!!"
+  password: "Omega3D"
+
+
 # Перевірки для автоматичної модерації.
 # Ви можете додавати скільки завгодно перевірок різних типів.
 # (Можливо коли-небуть SurvivalBoomChat зможе використовувати нейромережі для модерації...)
@@ -181,6 +197,13 @@ mentions:
       - '[show-action-title] &#a8ff78Гравець &#FF008C{MENTIONER} &#a8ff78згадав вас у чаті.'
     others-actions:
       - '[play-sound] ENTITY_EXPERIENCE_ORB_PICKUP 10 1'
+  ping-muted-event:
+    enabled: true
+    actions:
+      - '[show-action-title] &#a8ff78Гравець &#FF008C{MENTIONER} &#a8ff78згадав вас у чаті.'
+    others-actions:
+      - '[play-sound] ENTITY_EXPERIENCE_ORB_PICKUP 10 1'
+
 
 # Система приватних повідомлень. Гравці зможуть надсилати повідомлення так щоб ці повідомлення бачили тільки вони.
 private-messaging:
