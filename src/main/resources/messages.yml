@@ -28,10 +28,15 @@ nobody-hear-you-range: "&c&l! &fВас ніхто не почув. Наразі 
 mention-limit-reached: "&c| &fВи можете згадати максимум &c{LIMIT} &fгравців."
 mention-no-permission: "&c| &fВи не можете згадувати гравців. &f(&c{PERMISSION}&f)"
 
+ignore-syntax: "&c| &f Сінтакс команди &c/ignore &e<player>"
 ignore-bypass: "&c| &f Ви не можете ігнорувати цього гравця"
 ignore-success: "&a| &f Ви успішно почали ігнорувати цього гравця"
 unignore-success: "&a| &f Ви успішно закінчили ігнорувати цього гравця"
+# допустимі плейсхолдери
+# {player}  відображае гравця якого магалася замютити
+ignore-player-not-found: "&c| &f Гравця {player} незнайдено"
 
 help: |
   &8| &c/sbchat reload &7- Перезавантажити плагін.
+  &8| &c/ignore <player> &7 Перемикає стан ігнорування гравця
   &8| &c/sbchat help &7- Виводить ось цей дуже цікавий текст.
