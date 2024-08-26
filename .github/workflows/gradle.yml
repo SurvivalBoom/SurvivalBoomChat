@@ -32,38 +32,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: my-java-app
-          path: build/libs/*.jar
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-
-      # Создание нового релиза
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ github.run_number }}
-          release_name: Release ${{ github.run_number }}
-          draft: false
-          prerelease: false
-
-      # Загрузка артефактов в релиз
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build/libs/*.jar
-          asset_name: my-java-app-${{ github.run_number }}.jar
-          asset_content_type: application/java-archive
+          path: ./*.jar
 
   dependency-submission:
     runs-on: ubuntu-latest
