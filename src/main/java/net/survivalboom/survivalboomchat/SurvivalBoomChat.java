@@ -1,5 +1,7 @@
 package net.survivalboom.survivalboomchat;
 
+import com.github.Anon8281.universalScheduler.UniversalScheduler;
+import com.github.Anon8281.universalScheduler.scheduling.schedulers.TaskScheduler;
 import net.survivalboom.survivalboomchat.chatheads.ChatHeads;
 import net.survivalboom.survivalboomchat.chats.ChatManager;
 import net.survivalboom.survivalboomchat.chats.Mentions;
@@ -7,10 +9,10 @@ import net.survivalboom.survivalboomchat.commands.CommandsHandler;
 import net.survivalboom.survivalboomchat.commands.TabCompleteHandler;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
 import net.survivalboom.survivalboomchat.database.Database;
-import net.survivalboom.survivalboomchat.eventmessages.EventMessage;
 import net.survivalboom.survivalboomchat.eventmessages.EventMessagesManager;
 import net.survivalboom.survivalboomchat.moderation.ModerationManager;
 import net.survivalboom.survivalboomchat.pm.PMCommand;
+import net.survivalboom.survivalboomchat.utils.PlayerLocations;
 import net.survivalboom.survivalboomchat.utils.Utils;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,16 +21,18 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 
 public final class SurvivalBoomChat extends JavaPlugin {
-
+    private static TaskScheduler scheduler;
     private static SurvivalBoomChat plugin = null;
     private static final String compiledFor = "SurvivalBoomChat Public Release. Compiled For Public Use";
+    private static PlayerLocations playerLocations;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
-
         plugin = this;
-
+        scheduler = UniversalScheduler.getScheduler(plugin);
+        playerLocations = new PlayerLocations(scheduler);
+        playerLocations.init0();
         try {
 
             sendSplash();
@@ -54,8 +58,8 @@ public final class SurvivalBoomChat extends JavaPlugin {
             command.setExecutor(new CommandsHandler());
 
             PluginCommand ignorecommand = getCommand("ignore");
-            command.setTabCompleter(new TabCompleteHandler());
-            command.setExecutor(new CommandsHandler());
+            ignorecommand.setTabCompleter(new TabCompleteHandler());
+            ignorecommand.setExecutor(new CommandsHandler());
 
             PluginMessages.consoleSend("&a>> &fPlugin &aSurvivalBoomChat &fsuccessfully enabled!");
 
@@ -72,7 +76,18 @@ public final class SurvivalBoomChat extends JavaPlugin {
     public void onDisable() {
         if (Database.isEnabled()) Database.shutdown();
         // Plugin shutdown logic
+        playerLocations.shutdown0();
         PluginMessages.consoleSend("&a>> &fPlugin &aSurvivalBoomChat &fsuccessfully disabled!");
+    }
+
+    @NotNull
+    public static TaskScheduler getScheduler() {
+        return scheduler;
+    }
+
+    @NotNull
+    public static PlayerLocations getPlayerLocations() {
+        return playerLocations;
     }
 
     @NotNull
