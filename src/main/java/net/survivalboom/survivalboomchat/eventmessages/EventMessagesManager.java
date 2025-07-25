@@ -1,7 +1,5 @@
 package net.survivalboom.survivalboomchat.eventmessages;
 
-import net.kyori.adventure.Adventure;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.survivalboom.survivalboomchat.SurvivalBoomChat;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
 import net.survivalboom.survivalboomchat.placeholders.Placeholders;

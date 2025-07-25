@@ -1,6 +1,7 @@
 package net.survivalboom.survivalboomchat.moderation;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.TextComponent;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
 import net.survivalboom.survivalboomchat.events.Event;
 import org.bukkit.configuration.ConfigurationSection;
@@ -62,7 +63,12 @@ public abstract class Moderation {
         if (triggerEvent == null) return;
         triggerEvent.perform(event.getPlayer(), null);
         PluginMessages.sendMessage(event.getPlayer(), blockMessage);
-        PluginMessages.sendAdmins(notifyPermission, adminMessage);
+
+        String adminMsg = adminMessage
+                .replace("{PLAYER}", event.getPlayer().getName())
+                .replace("{MESSAGE}", ((TextComponent) event.message()).content());
+
+        PluginMessages.sendAdmins(notifyPermission, adminMsg);
     }
 
     public void clean(@NotNull AsyncChatEvent event) {
