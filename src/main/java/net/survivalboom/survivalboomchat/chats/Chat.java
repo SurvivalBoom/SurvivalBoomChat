@@ -158,7 +158,7 @@ public class Chat {
 
         Collection<Player> playersNearby;
         try {
-            playersNearby = Bukkit.getScheduler().callSyncMethod(SurvivalBoomChat.getPlugin(), () -> player.getLocation().getNearbyPlayers(range)).get();
+                playersNearby = SurvivalBoomChat.getScheduler().callSyncMethod(() -> SurvivalBoomChat.getPlayerLocations().getPlayersNearby(SurvivalBoomChat.getPlayerLocations().getPlayerLocation(player), range)).get();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
@@ -177,7 +177,7 @@ public class Chat {
             else if (range > 0 && playersNearby.size() == 0) runnable = () -> PluginMessages.sendMessage(player, PluginMessages.getMessage("nobody-hear-you-range"));
             else runnable = () -> PluginMessages.sendMessage(player, PluginMessages.getMessage("nobody-hear-you"));
 
-            Bukkit.getScheduler().runTaskLater(SurvivalBoomChat.getPlugin(), () -> {
+            SurvivalBoomChat.getScheduler().runTaskLater(() -> {
                 if (event.isCancelled()) return;
                 runnable.run();
             }, 20L);

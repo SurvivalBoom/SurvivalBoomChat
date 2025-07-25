@@ -17,7 +17,12 @@ public class TabCompleteHandler implements TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         List<String> out = new ArrayList<>();
+        if (label.equalsIgnoreCase("ignore")) {
+            return out;
+        }
         addPossibleCompletions(null, List.of("help", "reload"), args, out, 0, false);
+
+
         return out;
     }
 

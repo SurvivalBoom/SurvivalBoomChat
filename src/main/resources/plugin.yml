@@ -6,6 +6,8 @@ softdepend: ["SkinsRestorer"]
 
 website: "https://survivalboom.net"
 authors: [TIMURishche, SurvivalBoom Network 2024]
+folia-supported: true
+
 
 commands:
   survivalboomchat:

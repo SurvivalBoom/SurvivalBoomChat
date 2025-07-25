@@ -6,6 +6,7 @@ import net.milkbowl.vault.chat.Chat;
 import net.survivalboom.survivalboomchat.SurvivalBoomChat;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -16,6 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Utils {
 
@@ -27,6 +30,17 @@ public class Utils {
         ItemStack itemStack = new ItemStack(material);
         itemStack.setAmount(amount);
         inventory.removeItemAnySlot(itemStack);
+    }
+
+    public static List<Player> getNearbyPlayers(final Location location, final int range) {
+        final List<Player> players = new ArrayList<Player>();
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (location.distance(player.getLocation()) <= range){
+                players.add(player);
+            }
+        }
+        return players;
     }
 
     public static boolean copyPluginFile(String plugin_file_path) {

@@ -4,7 +4,6 @@ import net.survivalboom.survivalboomchat.SurvivalBoomChat;
 import net.survivalboom.survivalboomchat.configuration.PluginMessages;
 import net.survivalboom.survivalboomchat.placeholders.Placeholders;
 import net.survivalboom.survivalboomchat.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +26,7 @@ public abstract class Action {
 
     public void perform(@NotNull Player player, @Nullable Player placeholdersTarget, @Nullable Placeholders placeholders) {
 
-        Bukkit.getScheduler().runTaskLater(SurvivalBoomChat.getPlugin(), () -> {
+        SurvivalBoomChat.getScheduler().runTaskLater(() -> {
 
             try {
 

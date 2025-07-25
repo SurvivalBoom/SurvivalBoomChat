@@ -19,8 +19,9 @@ public class CommandsHandler implements CommandExecutor {
 
         try {
 
-            if (label.equalsIgnoreCase("ignore")) {
+            if (command.getLabel().equalsIgnoreCase("ignore")) {
                 IgnoreCommand.command(sender, args);
+                return true;
             }
 
             String argument = Utils.getArrayValue(args, 0);
